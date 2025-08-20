@@ -30,6 +30,10 @@ build: deps
 publish: build
 	${Q}echo "put $(BUILD_DIR)/$(PLUGIN).smx" | sftp -b - $(SFTP_DEST)
 
+.PHONY: reload
+reload: publish
+	${Q}rcon -a $(RCON_HOST) -p $(RCON_PASS) "sm plugins reload $(PLUGIN)"
+
 .PHONY: clean
 clean:
 	${Q}rm -rf $(BUILD_DIR)
