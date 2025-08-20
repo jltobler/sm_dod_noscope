@@ -1,5 +1,7 @@
 .DEFAULT_GOAL = all
 
+-include config.mak
+
 SM_URL    = https://sm.alliedmods.net/smdrop/1.12/sourcemod-1.12.0-git7210-linux.tar.gz
 PLUGIN    = sm_dod_noscope
 BUILD_DIR = build
@@ -23,6 +25,10 @@ deps:
 build: deps
 	${Q}mkdir -p $(BUILD_DIR)
 	${Q}$(DEPS_DIR)/addons/sourcemod/scripting/spcomp $(PLUGIN).sp -o$(BUILD_DIR)/$(PLUGIN).smx
+
+.PHONY: publish
+publish: build
+	${Q}echo "put $(BUILD_DIR)/$(PLUGIN).smx" | sftp -b - $(SFTP_DEST)
 
 .PHONY: clean
 clean:
